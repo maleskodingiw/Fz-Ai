@@ -7,6 +7,7 @@ import re
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 import random
+import json
 
 load_dotenv()
 
@@ -101,6 +102,7 @@ def chat():
         if not user_message:
             return jsonify({'error': 'Empty message'}), 400
         
+        # ─── CALL API ──────────────────────────────────────────
         response = requests.get(
             API_URL + user_message,
             timeout=30,
@@ -110,14 +112,56 @@ def chat():
         if response.status_code != 200:
             return jsonify({'error': f'API error: {response.status_code}'}), 500
         
-        result = response.json()
-        reply = result.get('result') or result.get('response') or result.get('data') or str(result)
+        # ─── PARSE RESPONSE ────────────────────────────────────
+        try:
+            result = response.json()
+        except json.JSONDecodeError:
+            # If response is not JSON, use raw text
+            reply = response.text
+            return jsonify({'reply': clean_response(reply)})
         
-        if not reply or reply == 'None':
-            return jsonify({'error': 'Empty response'}), 500
+        # ─── HANDLE DIFFERENT RESPONSE FORMATS ────────────────
+        reply = None
         
+        # Format 1: {"result": "..."}
+        if isinstance(result, dict):
+            if 'result' in result:
+                reply = result['result']
+            elif 'response' in result:
+                reply = result['response']
+            elif 'data' in result:
+                reply = result['data']
+            elif 'message' in result:
+                reply = result['message']
+            elif 'reply' in result:
+                reply = result['reply']
+            elif 'text' in result:
+                reply = result['text']
+            elif 'content' in result:
+                reply = result['content']
+            elif 'output' in result:
+                reply = result['output']
+            elif 'answer' in result:
+                reply = result['answer']
+            else:
+                # If no known key, check if there's a string value
+                for key, value in result.items():
+                    if isinstance(value, str) and len(value) > 10:
+                        reply = value
+                        break
+        
+        # If reply is still None, convert entire response to string
+        if reply is None:
+            reply = str(result)
+        
+        # If reply is empty or None
+        if not reply or reply == 'None' or reply == 'null':
+            return jsonify({'error': 'Empty response from API'}), 500
+        
+        # ─── CLEAN RESPONSE ────────────────────────────────────
         reply = clean_response(reply)
         
+        # ─── ANTI-SLOP ─────────────────────────────────────────
         if is_slop_response(reply):
             fallbacks = [
                 "Maaf, saya kurang faham dengan soalan tu. Boleh ulang dengan lebih jelas?",
@@ -131,7 +175,10 @@ def chat():
         
     except requests.exceptions.Timeout:
         return jsonify({'error': 'API timeout'}), 500
+    except requests.exceptions.ConnectionError:
+        return jsonify({'error': 'Connection error'}), 500
     except Exception as e:
+        print(f'Error: {e}')
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/preview', methods=['POST'])
