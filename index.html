@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Fz AI — Assistant pintar untuk chat, coding, dan idea.">
+
+<meta property="og:title" content="Fz AI — Assistant Malay">
+<meta property="og:description" content="Tanyakan apa saja — dari ide, kode.">
+<meta property="og:image" content="https://files.catbox.moe/2328ht.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:url" content="https://fzai.my">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fz AI — Assistant">
+<meta name="twitter:description" content="Tanyakan apa saja — dari ide.">
+<meta name="twitter:image" content="https://files.catbox.moe/2328ht.png">
+
+<title>Fz AI — Assistant Pintar</title>
+<link rel="icon" type="image/png" href="https://files.catbox.moe/2328ht.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    color-scheme: dark;
+    --bg: #000;
+    --fg: #ededed;
+    --muted: #8f8f8f;
+    --muted-2: #6f6f6f;
+    --border: rgba(255, 255, 255, .12);
+    --border-hover: rgba(255, 255, 255, .24);
+    --surface: rgba(255, 255, 255, .035);
+    --surface-hover: rgba(255, 255, 255, .055);
+    --accent: #fff;
+    --accent-dim: rgba(255, 255, 255, .28);
+    --accent-glow: rgba(255, 255, 255, .07);
+    --radius: 14px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--accent-dim); color: #fff; }
+
+a, button { -webkit-tap-highlight-color: transparent; text-decoration: none; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+.mono { font-family: 'JetBrains Mono', 'Geist Mono', monospace; }
+.site-muted { color: var(--muted); }
+
+.bg-logo-pattern {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    pointer-events: none;
+    opacity: 0.06;
+    overflow: hidden;
+}
+
+.bg-logo-pattern::before {
+    content: "Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz";
+    position: absolute;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 900;
+    font-size: 120px;
+    color: rgba(255,255,255,0.04);
+    letter-spacing: 60px;
+    line-height: 1.4;
+    width: 200%;
+    top: -10%;
+    left: -50%;
+    transform: rotate(-12deg);
+    white-space: nowrap;
+    text-shadow: 0 0 80px rgba(255,255,255,0.02);
+    user-select: none;
+    pointer-events: none;
+    animation: scrollBg 60s linear infinite;
+}
+
+.bg-logo-pattern::after {
+    content: "Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz Fz";
+    position: absolute;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 900;
+    font-size: 100px;
+    color: rgba(255,255,255,0.025);
+    letter-spacing: 50px;
+    line-height: 1.6;
+    width: 200%;
+    bottom: -10%;
+    right: -50%;
+    transform: rotate(8deg);
+    white-space: nowrap;
+    text-shadow: 0 0 60px rgba(255,255,255,0.015);
+    user-select: none;
+    pointer-events: none;
+    animation: scrollBgReverse 70s linear infinite;
+}
+
+@keyframes scrollBg {
+    0% { transform: rotate(-12deg) translateX(0); }
+    100% { transform: rotate(-12deg) translateX(-50%); }
+}
+
+@keyframes scrollBgReverse {
+    0% { transform: rotate(8deg) translateX(0); }
+    100% { transform: rotate(8deg) translateX(50%); }
+}
+
+.grid-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -9;
+    pointer-events: none;
+    background-image:
+        linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(to bottom, black, transparent 82%);
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent 82%);
+}
+
+/* ─── BRAND HEADER (MINIMAL, TIADA NAVIGASI) ──────────────── */
+.brand-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,0,0,.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-mark {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 1px solid var(--border-hover);
+    background: #111;
+}
+.brand-mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.brand-mark-fallback {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    background: #111;
+    border: 1px solid var(--border-hover);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: .85rem;
+    color: #fff;
+}
+
+.brand-text {
+    font-weight: 600;
+    letter-spacing: -.01em;
+    font-size: 1rem;
+}
+
+.brand-sub {
+    font-size: .68rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 14px var(--accent);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+    display: inline-block;
+}
+@keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .4; transform: scale(.8); }
+}
+
+/* ─── CHAT ────────────────────────────────────────────────── */
+.chat-container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 80px 20px 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.chat-msg {
+    display: flex;
+    gap: 12px;
+    max-width: 80%;
+    animation: rise .3s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.chat-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+
+.chat-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid var(--border-hover);
+    overflow: hidden;
+}
+.chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.chat-avatar.ai { background: var(--fg); color: #000; }
+.chat-avatar.user { background: rgba(255,255,255,.04); border-color: var(--border); color: var(--muted); }
+
+.chat-bubble {
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+.chat-msg.ai .chat-bubble {
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--border);
+    border-top-left-radius: 4px;
+}
+.chat-msg.user .chat-bubble {
+    background: rgba(255,255,255,.06);
+    border: 1px solid var(--border-hover);
+    border-top-right-radius: 4px;
+}
+.chat-bubble.error {
+    border-color: rgba(255,255,255,.3) !important;
+    background: rgba(255,255,255,.05) !important;
+    color: #f2a3a3;
+}
+
+.typing-dots { display: flex; gap: 4px; padding: 6px 2px; }
+.typing-dots span {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--muted);
+    animation: blink 1.2s infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: .2s; }
+.typing-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes blink {
+    0%,80%,100% { opacity: .25; }
+    40% { opacity: 1; }
+}
+
+/* ─── LINK PREVIEW ────────────────────────────────────────── */
+.link-preview {
+    margin: 8px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 100%;
+    display: inline-block;
+    background: rgba(255,255,255,.03);
+    transition: border-color 0.2s ease;
+}
+.link-preview:hover { border-color: var(--border-hover); }
+.link-preview a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+}
+.link-preview-image {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    background: rgba(255,255,255,.05);
+}
+.link-preview-body { padding: 12px 14px; }
+.link-preview-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--fg);
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.link-preview-desc {
+    font-size: 12.5px;
+    color: var(--muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+.link-preview-site {
+    font-size: 11px;
+    color: var(--muted-2);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.embed-image {
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: 8px;
+    margin: 6px 0;
+    border: 1px solid var(--border);
+}
+.embed-video {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    margin: 6px 0;
+    border: 1px solid var(--border);
+}
+.embed-container {
+    margin: 8px 0;
+    padding: 12px 16px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: inline-block;
+    max-width: 100%;
+}
+.embed-container a { color: #8ab4f8; text-decoration: none; word-break: break-all; }
+.embed-container a:hover { text-decoration: underline; }
+
+/* ─── COMPOSER ───────────────────────────────────────────── */
+.composer-glass {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    border-radius: 16px;
+    padding: 8px 8px 8px 16px;
+    transition: border-color .2s ease, background .2s ease;
+}
+.composer-glass:focus-within {
+    border-color: rgba(255,255,255,.45);
+    background: rgba(255,255,255,.045);
+}
+.composer-glass textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    resize: none;
+    color: var(--fg);
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-size: 14.5px;
+    line-height: 1.5;
+    max-height: 140px;
+    padding: 10px 0;
+    width: 100%;
+}
+.composer-glass textarea:focus { outline: none; }
+.composer-glass textarea::placeholder { color: var(--muted-2); }
+.composer-glass .send-btn {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    border: none;
+    background: var(--accent);
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform .12s ease, opacity .2s ease;
+}
+.composer-glass .send-btn:hover { opacity: .88; }
+.composer-glass .send-btn:active { transform: scale(0.92); }
+.composer-glass .send-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+.footer-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    color: var(--muted-2);
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--muted-2); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+@media (max-width: 640px) {
+    .brand-header { padding: 10px 16px; }
+    .brand-mark, .brand-mark-fallback { width: 26px; height: 26px; }
+    .brand-text { font-size: .92rem; }
+    .chat-msg { max-width: 92%; }
+    .chat-bubble { font-size: 13.5px; }
+    .bg-logo-pattern::before { font-size: 60px; letter-spacing: 30px; }
+    .bg-logo-pattern::after { font-size: 50px; letter-spacing: 25px; }
+    .chat-container { padding: 72px 16px 140px; }
+}
+
+@media (max-width: 380px) {
+    .bg-logo-pattern::before { font-size: 40px; letter-spacing: 20px; }
+    .bg-logo-pattern::after { font-size: 35px; letter-spacing: 15px; }
+}
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND LOGO PATTERN -->
+<div class="bg-logo-pattern"></div>
+<div class="grid-bg"></div>
+
+<!-- BRAND HEADER — TANPA NAVIGASI -->
+<header class="brand-header">
+    <span class="brand-mark" id="navLogo">
+        <img src="https://files.catbox.moe/2328ht.png" alt="Fz AI" onerror="this.parentElement.outerHTML='<span class=brand-mark-fallback>Fz</span>'">
+    </span>
+    <div>
+        <div class="brand-text">Fz AI</div>
+        <div class="brand-sub"><span class="eyebrow-dot"></span> online</div>
+    </div>
+</header>
+
+<!-- CHAT AREA -->
+<main class="chat-container" id="chatArea">
+    <!-- EMPTY STATE -->
+    <div id="emptyState" class="flex-1 flex items-center justify-center" style="min-height:300px;">
+        <div class="text-center max-w-sm">
+            <div class="mono text-xs uppercase tracking-widest text-[#8f8f8f] mb-3 flex items-center justify-center gap-2">
+                <span class="eyebrow-dot"></span>
+                FZ AI v2.0
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-white">Halo, saya Fz AI</h2>
+            <p class="text-[#8f8f8f] text-sm leading-relaxed mt-2">
+                Tanyakan apa saja — dari ide, kode, sampai obrolan santai.
+                <span class="block text-[#6f6f6f] text-xs mt-1">Powered by Fiqqzr7</span>
+            </p>
+        </div>
+    </div>
+</main>
+
+<!-- FOOTER COMPOSER -->
+<footer class="fixed bottom-0 left-0 right-0 px-4 sm:px-6 py-3.5 bg-gradient-to-t from-[#000] via-[#000] to-transparent">
+    <div class="max-w-[820px] mx-auto">
+        <div class="composer-glass flex items-end gap-2 rounded-2xl px-3 sm:px-4 py-1.5 transition-all duration-200">
+            <textarea id="input" rows="1" placeholder="Tulis pesan ke Fz AI..." 
+                      class="flex-1 bg-transparent border-none resize-none text-[#ededed] font-sans text-sm leading-relaxed max-h-[140px] py-2.5 px-0 placeholder:text-[#6f6f6f] focus:outline-none"></textarea>
+            <button id="sendBtn" class="send-btn">
+                <i class="fa-solid fa-arrow-up"></i>
+            </button>
+        </div>
+        <div class="flex justify-between items-center mt-2 px-1">
+            <span class="footer-text">Fz AI boleh buat kesalahan. Periksa semula info penting.</span>
+            <span class="footer-text text-[#4f4f4f]">powered by Fiqqzr7</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+// ============================================================
+// FZ AI — TANPA NAVIGASI
+// ============================================================
+
+const chatArea = document.getElementById('chatArea');
+const emptyState = document.getElementById('emptyState');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('sendBtn');
+
+let history = [];
+let isProcessing = false;
+const AVATAR_URL = 'https://files.catbox.moe/2328ht.png';
+
+// Auto resize textarea
+function autoResize() {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 140) + 'px';
+}
+input.addEventListener('input', autoResize);
+
+// Send on Enter
+input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+});
+
+// ─── LINK PREVIEW ─────────────────────────────────────────────
+function processMessage(text) {
+    let processed = text;
+    
+    // Image links
+    const imageRegex = /(https?:\/\/[^\s]+\.(png|jpg|jpeg|gif|webp|bmp|svg))/gi;
+    processed = processed.replace(imageRegex, (match) => {
+        return `<div class="embed-container"><img src="${match}" alt="Image" class="embed-image" loading="lazy" onerror="this.style.display='none'"></div>`;
+    });
+    
+    // Video links
+    const videoRegex = /(https?:\/\/[^\s]+\.(mp4|webm|mov|avi|mkv))/gi;
+    processed = processed.replace(videoRegex, (match) => {
+        return `<div class="embed-container"><video src="${match}" controls class="embed-video"></video></div>`;
+    });
+    
+    // YouTube links
+    const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/gi;
+    processed = processed.replace(ytRegex, (match, id) => {
+        return `<div class="embed-container"><iframe src="https://www.youtube.com/embed/${id}" class="embed-video" style="aspect-ratio:16/9;width:100%;max-width:560px;border:none;border-radius:8px;" allowfullscreen></iframe></div>`;
+    });
+    
+    // Regular links (fallback)
+    const linkRegex = /(https?:\/\/[^\s]+)/gi;
+    processed = processed.replace(linkRegex, (match) => {
+        if (match.match(/\.(png|jpg|jpeg|gif|webp|bmp|svg|mp4|webm|mov|avi|mkv)/i)) return match;
+        if (match.match(/youtube\.com|youtu\.be/)) return match;
+        return `<div class="link-preview"><a href="${match}" target="_blank" rel="noopener"><div class="link-preview-body"><div class="link-preview-title">${match}</div><div class="link-preview-site">${new URL(match).hostname}</div></div></a></div>`;
+    });
+    
+    return processed;
+}
+
+// ─── RENDER MESSAGE ──────────────────────────────────────────
+function renderMessage(role, text, isError = false) {
+    if (emptyState) emptyState.style.display = 'none';
+    
+    const msg = document.createElement('div');
+    msg.className = `chat-msg ${role === 'user' ? 'user' : ''}`;
+    
+    const avatar = document.createElement('div');
+    avatar.className = `chat-avatar ${role === 'ai' ? 'ai' : 'user'}`;
+    if (role === 'ai') {
+        avatar.innerHTML = `<img src="${AVATAR_URL}" alt="Fz" onerror="this.style.display='none'; this.parentElement.textContent='Fz';">`;
+    } else {
+        avatar.textContent = 'K';
+    }
+    
+    const bubble = document.createElement('div');
+    bubble.className = `chat-bubble ${isError ? 'error' : ''}`;
+    bubble.innerHTML = role === 'ai' ? processMessage(text) : text;
+    
+    msg.appendChild(avatar);
+    msg.appendChild(bubble);
+    chatArea.appendChild(msg);
+    window.scrollTo(0, document.body.scrollHeight);
+    return bubble;
+}
+
+function renderTyping() {
+    const msg = document.createElement('div');
+    msg.className = 'chat-msg';
+    msg.id = 'typingMsg';
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'chat-avatar ai';
+    avatar.innerHTML = `<img src="${AVATAR_URL}" alt="Fz" onerror="this.style.display='none'; this.parentElement.textContent='Fz';">`;
+    
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble';
+    bubble.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+    
+    msg.appendChild(avatar);
+    msg.appendChild(bubble);
+    chatArea.appendChild(msg);
+    window.scrollTo(0, document.body.scrollHeight);
+}
+
+function removeTyping() {
+    const el = document.getElementById('typingMsg');
+    if (el) el.remove();
+}
+
+async function sendMessage() {
+    const text = input.value.trim();
+    if (!text || isProcessing) return;
+    
+    renderMessage('user', text);
+    history.push({ role: 'user', content: text });
+    
+    input.value = '';
+    autoResize();
+    isProcessing = true;
+    sendBtn.disabled = true;
+    renderTyping();
+    
+    try {
+        const res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: history })
+        });
+        const data = await res.json();
+        removeTyping();
+        
+        if (!res.ok) {
+            renderMessage('ai', 'Error: ' + (data.error || 'Terjadi kesalahan'), true);
+        } else {
+            renderMessage('ai', data.reply);
+            history.push({ role: 'assistant', content: data.reply });
+        }
+    } catch (err) {
+        removeTyping();
+        renderMessage('ai', 'Gagal terhubung ke server.', true);
+    } finally {
+        isProcessing = false;
+        sendBtn.disabled = false;
+        input.focus();
+    }
+}
+
+sendBtn.addEventListener('click', sendMessage);
+
+document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        history = [];
+        chatArea.innerHTML = '';
+        chatArea.appendChild(emptyState);
+        emptyState.style.display = 'flex';
+        input.focus();
+    }
+});
+
+input.focus();
+console.log('Fz AI v2.0 — Powered by Fiqqzr7');
+</script>
+
+</body>
+</html>
