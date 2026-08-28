@@ -17,6 +17,46 @@ CORS(app)
 API_URL = os.getenv("API_URL", "https://api.nexadev.my.id/ai/chatgptpro?q=auto%20bahasa%20Malaysia")
 
 # ============================================================
+# CUSTOM GREETING — DETECT "hai" / "hello" / "hi"
+# ============================================================
+GREETING_KEYWORDS = ['hai', 'hello', 'hi', 'helo', 'hye', 'hey', 'halo', 'assalamualaikum', 'salam']
+
+def is_greeting(text: str) -> bool:
+    """Check if message is a greeting"""
+    if not text or not isinstance(text, str):
+        return False
+    text_lower = text.lower().strip()
+    # Check if text is exactly or starts with greeting
+    for word in GREETING_KEYWORDS:
+        if text_lower == word or text_lower.startswith(word + ' ') or text_lower.startswith(word + '!'):
+            return True
+    return False
+
+def get_greeting_response(text: str) -> str:
+    """Return custom greeting response"""
+    # Check if it's a simple greeting
+    text_lower = text.lower().strip()
+    
+    # List of custom responses
+    responses = [
+        "Saya dibuat oleh Fiqqzr7. Ada apa yang boleh saya bantu?",
+        "Dibuat oleh Fiqqzr7! Ada soalan?",
+        "Fiqqzr7 yang bina saya. Apa yang awak nak tahu?",
+        "Saya ciptaan Fiqqzr7. Nak tanya apa-apa?",
+        "Dibuat oleh Fiqqzr7. Saya sedia membantu!"
+    ]
+    
+    # If it's just a simple greeting
+    if text_lower in ['hai', 'hello', 'hi', 'helo', 'hye', 'hey', 'halo']:
+        return random.choice(responses)
+    
+    # If it's "assalamualaikum" or "salam"
+    if text_lower in ['assalamualaikum', 'salam']:
+        return f"Waalaikumsalam! Saya dibuat oleh Fiqqzr7. Ada apa yang boleh saya bantu?"
+    
+    return None
+
+# ============================================================
 # SERVE INDEX
 # ============================================================
 @app.route('/')
@@ -54,7 +94,7 @@ def fetch_og_data(url):
         return None
 
 # ============================================================
-# ANTI-SLOP — FIXED (TERIMA STRING SAHAJA)
+# ANTI-SLOP
 # ============================================================
 def is_slop_response(text):
     if not text or not isinstance(text, str):
@@ -72,6 +112,13 @@ def clean_response(text):
     if not isinstance(text, str):
         text = str(text)
     
+    # Remove extra brackets [ ] from API response
+    text = re.sub(r'^\[|\]$', '', text)
+    
+    # Remove extra quotes
+    text = re.sub(r'^"|"$', '', text)
+    
+    # Clean whitespace
     text = re.sub(r'\s+', ' ', text).strip()
     
     # Remove emoji
@@ -90,7 +137,60 @@ def clean_response(text):
         u"\U000024C2-\U0001F251"
         "]+", flags=re.UNICODE)
     text = emoji_pattern.sub('', text)
+    
     return text
+
+# ============================================================
+# EXTRACT REPLY FROM API — HANDLE ALL FORMATS
+# ============================================================
+def extract_reply(result):
+    """Extract reply from API response (handles dict, list, string)"""
+    
+    # If result is a list
+    if isinstance(result, list):
+        if len(result) == 0:
+            return None
+        # Try to get first item if it's a string
+        if isinstance(result[0], str):
+            return result[0]
+        # If first item is dict with message
+        if isinstance(result[0], dict):
+            return extract_reply(result[0])
+        return str(result[0])
+    
+    # If result is a string
+    if isinstance(result, str):
+        return result
+    
+    # If result is a dict
+    if isinstance(result, dict):
+        # Check for error
+        if result.get('status') == False:
+            return None
+        
+        # Try common keys
+        keys = ['result', 'response', 'data', 'message', 'reply', 'text', 'content', 'output', 'answer']
+        for key in keys:
+            if key in result:
+                value = result[key]
+                if isinstance(value, list):
+                    if value and isinstance(value[0], str):
+                        return value[0]
+                    return str(value) if value else None
+                if isinstance(value, str):
+                    return value
+                if isinstance(value, dict):
+                    return extract_reply(value)
+        
+        # If no known key, try to find any string value
+        for key, value in result.items():
+            if isinstance(value, str) and len(value) > 10:
+                return value
+            if isinstance(value, list) and value and isinstance(value[0], str):
+                return value[0]
+    
+    # Fallback: convert to string
+    return str(result) if result else None
 
 # ============================================================
 # API ROUTES
@@ -108,6 +208,11 @@ def chat():
         
         if not user_message:
             return jsonify({'error': 'Empty message'}), 400
+        
+        # ─── CHECK FOR GREETING FIRST ─────────────────────────
+        greeting_response = get_greeting_response(user_message)
+        if greeting_response:
+            return jsonify({'reply': greeting_response})
         
         # ─── CALL API ──────────────────────────────────────────
         response = requests.get(
@@ -138,46 +243,10 @@ def chat():
             
             return jsonify({'reply': reply})
         
-        # ─── HANDLE DIFFERENT RESPONSE FORMATS ────────────────
-        reply = None
+        # ─── EXTRACT REPLY ─────────────────────────────────────
+        reply = extract_reply(result)
         
-        # Format 1: {"result": "..."}
-        if isinstance(result, dict):
-            # Check for error message first
-            if result.get('status') == False:
-                error_msg = result.get('message', 'Unknown error')
-                return jsonify({'error': f'API Error: {error_msg}'}), 500
-            
-            if 'result' in result:
-                reply = result['result']
-            elif 'response' in result:
-                reply = result['response']
-            elif 'data' in result:
-                reply = result['data']
-            elif 'message' in result:
-                reply = result['message']
-            elif 'reply' in result:
-                reply = result['reply']
-            elif 'text' in result:
-                reply = result['text']
-            elif 'content' in result:
-                reply = result['content']
-            elif 'output' in result:
-                reply = result['output']
-            elif 'answer' in result:
-                reply = result['answer']
-            else:
-                # If no known key, check if there's a string value
-                for key, value in result.items():
-                    if isinstance(value, str) and len(value) > 10:
-                        reply = value
-                        break
-        
-        # If reply is still None, convert entire response to string
-        if reply is None:
-            reply = str(result)
-        
-        # If reply is empty or None
+        # If reply is None or empty
         if not reply or reply == 'None' or reply == 'null':
             return jsonify({'error': 'Empty response from API'}), 500
         
