@@ -14,7 +14,7 @@ load_dotenv()
 app = Flask(__name__, static_folder='.', static_url_path='')
 CORS(app)
 
-API_URL = os.getenv("API_URL", "https://api.nexadev.my.id/ai/claude?text=")
+API_URL = os.getenv("API_URL", "https://api.nexadev.my.id/ai/chatgptpro?q=auto%20bahasa%20Malaysia")
 
 # ============================================================
 # SERVE INDEX
@@ -54,10 +54,12 @@ def fetch_og_data(url):
         return None
 
 # ============================================================
-# ANTI-SLOP
+# ANTI-SLOP — FIXED (TERIMA STRING SAHAJA)
 # ============================================================
 def is_slop_response(text):
-    if not text or len(text.strip()) < 3:
+    if not text or not isinstance(text, str):
+        return True
+    if len(text.strip()) < 3:
         return True
     if text.strip().lower() in ["ok", "yes", "no", "ya", "tidak", "hi", "hello", "hai"]:
         return True
@@ -66,7 +68,12 @@ def is_slop_response(text):
     return False
 
 def clean_response(text):
+    # Ensure text is string
+    if not isinstance(text, str):
+        text = str(text)
+    
     text = re.sub(r'\s+', ' ', text).strip()
+    
     # Remove emoji
     emoji_pattern = re.compile(
         "["
@@ -118,13 +125,29 @@ def chat():
         except json.JSONDecodeError:
             # If response is not JSON, use raw text
             reply = response.text
-            return jsonify({'reply': clean_response(reply)})
+            reply = clean_response(reply)
+            
+            if is_slop_response(reply):
+                fallbacks = [
+                    "Maaf, saya kurang faham dengan soalan tu. Boleh ulang dengan lebih jelas?",
+                    "Saya rasa soalan tu terlalu ringkas. Boleh bagi lebih detail?",
+                    "Maaf, saya tak dapat proses permintaan tu. Cuba tanya dengan cara lain.",
+                    "Saya tak pasti apa maksud awak. Boleh jelaskan?"
+                ]
+                reply = random.choice(fallbacks)
+            
+            return jsonify({'reply': reply})
         
         # ─── HANDLE DIFFERENT RESPONSE FORMATS ────────────────
         reply = None
         
         # Format 1: {"result": "..."}
         if isinstance(result, dict):
+            # Check for error message first
+            if result.get('status') == False:
+                error_msg = result.get('message', 'Unknown error')
+                return jsonify({'error': f'API Error: {error_msg}'}), 500
+            
             if 'result' in result:
                 reply = result['result']
             elif 'response' in result:
