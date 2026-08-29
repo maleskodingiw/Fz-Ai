@@ -4,19 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#000000">
-<meta name="description" content="Fz AI — Assistant pintar untuk chat, coding, dan idea.">
+<meta name="description" content="Fz AI — Assistant AI Bijak.">
 
-<!-- OG Tags -->
 <meta property="og:title" content="Fz AI — Assistant Pintar">
-<meta property="og:description" content="Tanyakan apa saja — dari ide, kode, sampai obrolan santai.">
+<meta property="og:description" content="Tanyakan apa saja AI Bijak.">
 <meta property="og:image" content="https://files.catbox.moe/2328ht.png">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta property="og:url" content="https://fzai.my">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Fz AI — Assistant Pintar">
-<meta name="twitter:description" content="Tanyakan apa saja — dari ide, kode, sampai obrolan santai.">
+<meta name="twitter:title" content="Fz AI — Assistant">
+<meta name="twitter:description" content="Tanyakan apa saja AI Bijak.">
 <meta name="twitter:image" content="https://files.catbox.moe/2328ht.png">
 
 <title>Fz AI — Assistant Pintar</title>
@@ -62,7 +61,6 @@ body {
 ::selection { background: var(--accent-dim); color: #fff; }
 .mono { font-family: 'JetBrains Mono', monospace; }
 
-/* ─── VIDEO BACKGROUND (MACAM WARPAH) ─── */
 .bg-video {
     position: fixed;
     top: 0;
@@ -82,23 +80,20 @@ body {
     pointer-events: none;
 }
 
-/* ─── GRID BACKGROUND ─── */
-.grid-bg {
+.ambient-glow {
     position: fixed;
-    inset: 0;
-    z-index: -1;
+    top: -150px;
+    left: -100px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.04) 0%, transparent 65%);
     pointer-events: none;
-    background-image:
-        linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: linear-gradient(to bottom, black, transparent 80%);
+    z-index: -1;
 }
 
-/* ─── HEADER ─── */
 .brand-header {
     flex-shrink: 0;
-    padding: 10px 14px;
+    padding: 10px 16px;
     border-bottom: 1px solid var(--border);
     background: rgba(0,0,0,0.85);
     backdrop-filter: blur(16px);
@@ -125,21 +120,35 @@ body {
     border: 1px solid var(--border-hover);
     background: #111;
 }
-.brand-mark img { width: 100%; height: 100%; object-fit: cover; }
+.brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .brand-mark-fallback {
-    width: 28px; height: 28px;
+    width: 28px;
+    height: 28px;
     border-radius: 8px;
+    flex-shrink: 0;
     background: #111;
     border: 1px solid var(--border-hover);
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
     font-weight: 700;
     font-size: 12px;
     color: #fff;
 }
 
-.brand-text { font-weight: 600; font-size: 15px; letter-spacing: -.01em; }
+.brand-text {
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -.01em;
+}
+
 .brand-sub {
     font-size: 10px;
     color: var(--muted);
@@ -152,7 +161,8 @@ body {
 }
 
 .dot-live {
-    width: 5px; height: 5px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background: var(--accent);
     box-shadow: 0 0 10px var(--accent);
@@ -168,7 +178,7 @@ body {
     background: rgba(255,255,255,0.05);
     border: 1px solid var(--border);
     color: var(--muted);
-    font-size: 12px;
+    font-size: 11px;
     padding: 5px 12px;
     border-radius: 999px;
     cursor: pointer;
@@ -181,19 +191,207 @@ body {
     color: var(--fg);
 }
 
-/* ─── CHAT AREA ─── */
+.hero-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 20px 10px;
+    overflow: hidden;
+}
+
+.hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.hero-left {
+    flex: 1;
+    min-width: 0;
+}
+
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px 4px 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-bottom: 16px;
+}
+.hero-eyebrow-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+    display: inline-block;
+}
+
+.hero-h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(28px, 4.5vw, 48px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 10px;
+    color: #fff;
+}
+.hero-h1 .highlight {
+    color: rgba(255,255,255,0.5);
+}
+
+.hero-p {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 440px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+}
+
+.hero-right {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.img3d-scene {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    perspective: 800px;
+}
+
+.img3d-wrap {
+    position: relative;
+    border-radius: 18px;
+    overflow: visible;
+    transform-style: preserve-3d;
+    transition: transform 0.08s ease-out;
+    cursor: default;
+    will-change: transform;
+}
+
+.img3d-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
+    user-select: none;
+}
+
+.img3d-shine {
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.02) 100%);
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+.img3d-glow {
+    position: absolute;
+    inset: -3px;
+    border-radius: 21px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(100,100,255,0.05), transparent 60%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    filter: blur(2px);
+}
+.img3d-wrap:hover .img3d-glow { opacity: 1; }
+
+.img3d-shadow {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 40px;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.08) 0%, transparent 70%);
+    filter: blur(16px);
+    animation: shadowFloat 4s ease-in-out infinite;
+}
+@keyframes shadowFloat {
+    0%,100% { opacity: 0.4; transform: translateX(-50%) scaleX(0.95); }
+    50% { opacity: 0.7; transform: translateX(-50%) scaleX(1.05); }
+}
+
+.img3d-badge {
+    position: absolute;
+    padding: 5px 12px;
+    background: rgba(10,10,10,0.9);
+    border: 1px solid var(--border-hover);
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--fg);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+}
+
+.badge-tl {
+    top: -10px;
+    left: -14px;
+    animation: floatBadge1 3.5s ease-in-out infinite;
+}
+.badge-br {
+    bottom: 12px;
+    right: -14px;
+    animation: floatBadge2 3.5s ease-in-out infinite 1.75s;
+}
+
+@keyframes floatBadge1 {
+    0%,100% { transform: translateY(0px) rotate(-1deg); }
+    50% { transform: translateY(-6px) rotate(0deg); }
+}
+@keyframes floatBadge2 {
+    0%,100% { transform: translateY(0px) rotate(1deg); }
+    50% { transform: translateY(-5px) rotate(0deg); }
+}
+
+.badge-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: pulse 1.5s ease-in-out infinite;
+    display: inline-block;
+}
+
 .chat-container {
+    display: none;
     flex: 1;
     overflow-y: auto;
     padding: 12px 14px 20px;
-    display: flex;
     flex-direction: column;
     gap: 12px;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
 }
 
-/* ─── EMPTY STATE ─── */
+.chat-container.active {
+    display: flex;
+}
+
 .empty-state {
     flex: 1;
     display: flex;
@@ -202,12 +400,11 @@ body {
     text-align: center;
     padding: 20px;
 }
-.empty-state .icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
-.empty-state h2 { font-size: 20px; font-weight: 600; color: #fff; }
-.empty-state p { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
-.empty-state .powered { font-size: 11px; color: var(--muted-2); margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
+.empty-state .icon { font-size: 28px; margin-bottom: 10px; opacity: 0.4; }
+.empty-state h2 { font-size: 18px; font-weight: 600; color: #fff; }
+.empty-state p { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.6; }
+.empty-state .powered { font-size: 10px; color: var(--muted-2); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
 
-/* ─── CHAT MESSAGE ─── */
 .chat-msg {
     display: flex;
     gap: 10px;
@@ -271,7 +468,6 @@ body {
     color: #f2a3a3;
 }
 
-/* ─── COPY BUTTON UNTUK CODE ─── */
 .copy-code-btn {
     background: rgba(255,255,255,0.06);
     border: 1px solid var(--border);
@@ -295,7 +491,6 @@ body {
     border-color: #4ade80;
 }
 
-/* ─── CODE BLOCK ─── */
 .code-block {
     background: rgba(255,255,255,0.05);
     border: 1px solid var(--border);
@@ -311,18 +506,10 @@ body {
     color: #e2e8f0;
     max-width: 100%;
 }
-.code-block .code-lang {
-    font-size: 10px;
-    color: var(--muted-2);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 4px;
-    display: block;
-}
+.code-block .code-lang { font-size: 10px; color: var(--muted-2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; display: block; }
 .code-block code { font-family: inherit; font-size: inherit; }
 .code-actions { display: flex; justify-content: flex-end; margin-top: 4px; }
 
-/* ─── TYPING ─── */
 .typing-dots { display: flex; gap: 4px; padding: 6px 2px; }
 .typing-dots span {
     width: 5px; height: 5px;
@@ -337,7 +524,6 @@ body {
     40% { opacity: 1; }
 }
 
-/* ─── LINK PREVIEW ─── */
 .link-preview {
     margin: 4px 0;
     border: 1px solid var(--border);
@@ -347,65 +533,18 @@ body {
     background: rgba(255,255,255,0.03);
 }
 .link-preview a { text-decoration: none; color: inherit; display: flex; flex-direction: column; }
-.link-preview-image {
-    width: 100%;
-    max-height: 140px;
-    object-fit: cover;
-    background: rgba(255,255,255,0.05);
-}
+.link-preview-image { width: 100%; max-height: 120px; object-fit: cover; background: rgba(255,255,255,0.05); }
 .link-preview-body { padding: 10px 12px; }
-.link-preview-title {
-    font-weight: 600;
-    font-size: 13px;
-    color: var(--fg);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-.link-preview-desc {
-    font-size: 12px;
-    color: var(--muted);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin-top: 2px;
-}
-.link-preview-site {
-    font-size: 10px;
-    color: var(--muted-2);
-    font-family: 'JetBrains Mono', monospace;
-    margin-top: 4px;
-}
+.link-preview-title { font-weight: 600; font-size: 13px; color: var(--fg); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.link-preview-desc { font-size: 12px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-top: 2px; }
+.link-preview-site { font-size: 10px; color: var(--muted-2); font-family: 'JetBrains Mono', monospace; margin-top: 4px; }
 
-.embed-image {
-    max-width: 100%;
-    max-height: 280px;
-    border-radius: 6px;
-    margin: 4px 0;
-    border: 1px solid var(--border);
-}
-.embed-video {
-    max-width: 100%;
-    max-height: 200px;
-    border-radius: 6px;
-    margin: 4px 0;
-    border: 1px solid var(--border);
-}
-.embed-container {
-    margin: 4px 0;
-    padding: 10px 12px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    display: inline-block;
-    max-width: 100%;
-}
+.embed-image { max-width: 100%; max-height: 240px; border-radius: 6px; margin: 4px 0; border: 1px solid var(--border); }
+.embed-video { max-width: 100%; max-height: 180px; border-radius: 6px; margin: 4px 0; border: 1px solid var(--border); }
+.embed-container { margin: 4px 0; padding: 10px 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 8px; display: inline-block; max-width: 100%; }
 .embed-container a { color: #8ab4f8; word-break: break-all; }
 .embed-container a:hover { text-decoration: underline; }
 
-/* ─── INLINE CODE ─── */
 .inline-code {
     background: rgba(255,255,255,0.06);
     padding: 1px 6px;
@@ -415,7 +554,6 @@ body {
     color: #e2e8f0;
 }
 
-/* ─── COMPOSER ─── */
 .composer-wrap {
     flex-shrink: 0;
     padding: 8px 12px 12px;
@@ -485,53 +623,48 @@ body {
 }
 .footer-text span { color: #4f4f4f; }
 
-/* ─── SCROLLBAR ─── */
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--muted-2); border-radius: 99px; }
 
-/* ─── RESPONSIVE ─── */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+    .hero-inner { flex-direction: column-reverse; gap: 20px; }
+    .hero-left { text-align: center; }
+    .hero-p { max-width: 100%; }
+    .hero-right { max-width: 200px; }
+    .img3d-scene { max-width: 200px; }
+    .badge-tl { top: -8px; left: -8px; padding: 3px 10px; font-size: 9px; }
+    .badge-br { bottom: 8px; right: -8px; padding: 3px 10px; font-size: 9px; }
+    .hero-h1 { font-size: clamp(24px, 6vw, 32px); }
     .brand-header { padding: 8px 12px; }
     .brand-mark { width: 24px; height: 24px; }
     .brand-text { font-size: 13px; }
     .brand-sub { font-size: 9px; }
     .btn-clear { font-size: 10px; padding: 4px 10px; }
-    
-    .chat-container { padding: 10px 10px 16px; gap: 10px; }
-    .chat-msg { max-width: 94%; gap: 8px; }
-    .chat-avatar { width: 24px; height: 24px; font-size: 9px; }
-    .chat-bubble { font-size: 13px; padding: 8px 12px; }
-    
-    .composer-wrap { padding: 6px 10px 10px; }
-    .composer { padding: 3px 3px 3px 12px; border-radius: 12px; }
-    .composer textarea { font-size: 13px; min-height: 32px; padding: 6px 0; }
-    .composer .send-btn { width: 34px; height: 34px; border-radius: 8px; }
-    .composer .send-btn svg { width: 14px; height: 14px; }
-    
-    .empty-state h2 { font-size: 17px; }
-    .empty-state p { font-size: 12px; }
-    .code-block { font-size: 11px; padding: 8px 10px; }
-    .link-preview-image { max-height: 100px; }
-    .embed-image { max-height: 200px; }
-    .embed-video { max-height: 160px; }
-    .copy-code-btn { font-size: 9px; padding: 2px 8px; }
+    .img3d-shadow { bottom: -30px; height: 30px; }
+}
+
+@media (max-width: 380px) {
+    .hero-right { max-width: 150px; }
+    .img3d-scene { max-width: 150px; }
+    .badge-tl, .badge-br { display: none; }
+    .hero-h1 { font-size: 20px; }
+    .hero-p { font-size: 12px; }
+    .composer textarea { font-size: 12px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ─── VIDEO BACKGROUND (MACAM WARPAH) ─── -->
 <video class="bg-video" autoplay muted loop playsinline>
-    <source src="https://files.catbox.moe/81x337.mp4" type="video/mp4">
+    <source src="https://files.catbox.moe/8zujc8.mp4" type="video/mp4">
 </video>
 <div class="bg-video-overlay"></div>
-<div class="grid-bg"></div>
+<div class="ambient-glow"></div>
 
-<!-- HEADER -->
 <header class="brand-header">
     <div class="brand-left">
-        <span class="brand-mark">
+        <span class="brand-mark" id="navLogo">
             <img src="https://files.catbox.moe/2328ht.png" alt="Fz AI" onerror="this.parentElement.outerHTML='<span class=brand-mark-fallback>Fz</span>'">
         </span>
         <div>
@@ -539,23 +672,56 @@ body {
             <div class="brand-sub"><span class="dot-live"></span> online</div>
         </div>
     </div>
-    <button class="btn-clear" id="clearBtn"><i class="fa-regular fa-trash-can"></i> Bersih</button>
+    <button class="btn-clear" id="clearBtn"><i class="fa-regular fa-trash-can"></i> Clear</button>
 </header>
 
-<!-- CHAT AREA -->
+<section class="hero-area" id="heroArea">
+    <div class="hero-inner">
+        <!-- LEFT -->
+        <div class="hero-left">
+            <div class="hero-eyebrow">
+                <span class="hero-eyebrow-dot"></span>
+                FZ AI v2.0
+            </div>
+            <h1 class="hero-h1">
+                Halo, saya<br><span class="highlight">Fz AI</span>
+            </h1>
+            <p class="hero-p">Tanyakan apa saja Terima Kasih Sudah Menggunak Fz AI.</p>
+            <button class="btn-clear" style="display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#000;border:none;padding:10px 20px;font-weight:600;border-radius:10px;font-size:13px;cursor:pointer;transition:opacity 0.2s;" onclick="startChat()">
+                <i class="fa-regular fa-comment"></i> Mula Chat
+            </button>
+        </div>
+        <div class="hero-right">
+            <div class="img3d-scene">
+                <div class="img3d-wrap" id="img3d">
+                    <div class="img3d-glow"></div>
+                    <img src="https://files.catbox.moe/2328ht.png" alt="Fz AI" class="img3d-img" draggable="false">
+                    <div class="img3d-shine"></div>
+                    <div class="img3d-badge badge-tl">
+                        <span class="badge-dot"></span> Online
+                    </div>
+                    <div class="img3d-badge badge-br">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="var(--accent)"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        AI Active
+                    </div>
+                </div>
+                <div class="img3d-shadow"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <main class="chat-container" id="chatArea">
-    <!-- EMPTY STATE -->
     <div class="empty-state" id="emptyState">
         <div>
             <div class="icon">Fz</div>
             <h2>Halo, saya Fz AI</h2>
-            <p>Tanyakan apa saja — dari ide, kode, sampai obrolan santai.</p>
+            <p>Tanyakan apa saja — Terima Kasih Sudah Mengunakkan Fz AI.</p>
             <div class="powered">powered by Fiqqzr7</div>
         </div>
     </div>
 </main>
 
-<!-- COMPOSER -->
 <div class="composer-wrap">
     <div class="composer">
         <textarea id="input" rows="1" placeholder="Tanya Fz AI..."></textarea>
@@ -567,9 +733,33 @@ body {
 </div>
 
 <script>
-// ============================================================
-// FZ AI — FULL VERSION (DENGAN BACKGROUND VIDEO)
-// ============================================================
+
+function startChat() {
+    document.getElementById('heroArea').style.display = 'none';
+    document.getElementById('chatArea').classList.add('active');
+    document.getElementById('input').focus();
+}
+
+const img3d = document.getElementById('img3d');
+const img3dScene = img3d?.closest('.img3d-scene');
+if (img3dScene && img3d) {
+    let targetRX = 0, targetRY = 0, curRX = 0, curRY = 0;
+    img3dScene.addEventListener('mousemove', (e) => {
+        const rect = img3dScene.getBoundingClientRect();
+        const dx = (e.clientX - rect.left - rect.width/2) / (rect.width/2);
+        const dy = (e.clientY - rect.top - rect.height/2) / (rect.height/2);
+        targetRX = dy * -12;
+        targetRY = dx * 12;
+    });
+    img3dScene.addEventListener('mouseleave', () => { targetRX = 0; targetRY = 0; });
+    (function loop() {
+        curRX += (targetRX - curRX) * 0.07;
+        curRY += (targetRY - curRY) * 0.07;
+        const scale = Math.abs(curRX) > 0.1 || Math.abs(curRY) > 0.1 ? 1.02 : 1;
+        img3d.style.transform = 'rotateX(' + curRX + 'deg) rotateY(' + curRY + 'deg) scale(' + scale + ')';
+        requestAnimationFrame(loop);
+    })();
+}
 
 const chatArea = document.getElementById('chatArea');
 const emptyState = document.getElementById('emptyState');
@@ -581,14 +771,12 @@ let history = [];
 let isProcessing = false;
 const AVATAR_URL = 'https://files.catbox.moe/2328ht.png';
 
-// ─── AUTO RESIZE ─────────────────────────────────────────────
 function autoResize() {
     input.style.height = 'auto';
     input.style.height = Math.min(input.scrollHeight, 100) + 'px';
 }
 input.addEventListener('input', autoResize);
 
-// ─── SEND ON ENTER ──────────────────────────────────────────
 input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
@@ -596,60 +784,47 @@ input.addEventListener('keydown', (e) => {
     }
 });
 
-// ─── ESCAPE HTML ─────────────────────────────────────────────
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
-// ─── PROCESS MESSAGE ────────────────────────────────────────
 function processMessage(text) {
     let processed = text;
     let codeBlocks = [];
     
-    // ─── CODE BLOCKS ──────────────────────────────────────────
     processed = processed.replace(/```(\w*)\n([\s\S]*?)```/g, function(match, lang, code) {
         const langLabel = lang ? '<span class="code-lang">' + escapeHtml(lang) + '</span>' : '';
         const cleanCode = code.trim();
-        const codeId = 'code-' + codeBlocks.length;
         codeBlocks.push(cleanCode);
-        return '<div class="code-block" id="' + codeId + '">' + langLabel + '<code>' + escapeHtml(cleanCode) + '</code><div class="code-actions"></div></div>';
+        return '<div class="code-block">' + langLabel + '<code>' + escapeHtml(cleanCode) + '</code><div class="code-actions"></div></div>';
     });
     
-    // ─── INLINE CODE ──────────────────────────────────────────
     processed = processed.replace(/`([^`]+)`/g, function(match, code) {
         return '<span class="inline-code">' + escapeHtml(code) + '</span>';
     });
     
-    // ─── IMAGE LINKS ──────────────────────────────────────────
     const imageRegex = /(https?:\/\/[^\s]+\.(png|jpg|jpeg|gif|webp|bmp|svg))/gi;
     processed = processed.replace(imageRegex, function(match) {
         return '<div class="embed-container"><img src="' + match + '" alt="Image" class="embed-image" loading="lazy" onerror="this.style.display=\'none\'"></div>';
     });
     
-    // ─── VIDEO LINKS ──────────────────────────────────────────
     const videoRegex = /(https?:\/\/[^\s]+\.(mp4|webm|mov|avi|mkv))/gi;
     processed = processed.replace(videoRegex, function(match) {
         return '<div class="embed-container"><video src="' + match + '" controls class="embed-video"></video></div>';
     });
     
-    // ─── YOUTUBE ──────────────────────────────────────────────
     const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/gi;
     processed = processed.replace(ytRegex, function(match, id) {
         return '<div class="embed-container"><iframe src="https://www.youtube.com/embed/' + id + '" class="embed-video" style="aspect-ratio:16/9;width:100%;max-width:100%;border:none;border-radius:6px;" allowfullscreen></iframe></div>';
     });
     
-    // ─── REGULAR LINKS ────────────────────────────────────────
     const linkRegex = /(https?:\/\/[^\s]+)/gi;
     processed = processed.replace(linkRegex, function(match) {
         if (match.match(/\.(png|jpg|jpeg|gif|webp|bmp|svg|mp4|webm|mov|avi|mkv)/i)) return match;
         if (match.match(/youtube\.com|youtu\.be/)) return match;
-        try {
-            var hostname = new URL(match).hostname;
-        } catch {
-            var hostname = match;
-        }
+        try { var hostname = new URL(match).hostname; } catch { var hostname = match; }
         return '<div class="link-preview"><a href="' + match + '" target="_blank" rel="noopener"><div class="link-preview-body"><div class="link-preview-title">' + match + '</div><div class="link-preview-site">' + hostname + '</div></div></a></div>';
     });
     
@@ -657,7 +832,6 @@ function processMessage(text) {
     return processed;
 }
 
-// ─── ADD COPY BUTTONS ──────────────────────────────────────
 function addCopyButtonsToCodeBlocks() {
     var codeBlocks = document.querySelectorAll('.code-block');
     codeBlocks.forEach(function(block) {
@@ -688,12 +862,8 @@ function copyCode(text, btn) {
                 btn.textContent = 'Copy code';
                 btn.classList.remove('copied');
             }, 2000);
-        }).catch(function() {
-            fallbackCopy(text, btn);
-        });
-    } catch {
-        fallbackCopy(text, btn);
-    }
+        }).catch(function() { fallbackCopy(text, btn); });
+    } catch { fallbackCopy(text, btn); }
 }
 
 function fallbackCopy(text, btn) {
@@ -709,13 +879,10 @@ function fallbackCopy(text, btn) {
             btn.textContent = 'Copy code';
             btn.classList.remove('copied');
         }, 2000);
-    } catch {
-        btn.textContent = 'Failed';
-    }
+    } catch { btn.textContent = 'Failed'; }
     area.remove();
 }
 
-// ─── RENDER MESSAGE ──────────────────────────────────────────
 function renderMessage(role, text, isError) {
     if (isError === undefined) isError = false;
     if (emptyState) emptyState.style.display = 'none';
@@ -736,7 +903,6 @@ function renderMessage(role, text, isError) {
     
     var bubble = document.createElement('div');
     bubble.className = 'chat-bubble' + (isError ? ' error' : '');
-    
     if (role === 'ai' && !isError) {
         bubble.innerHTML = processMessage(text);
     } else {
@@ -747,32 +913,23 @@ function renderMessage(role, text, isError) {
     msg.appendChild(avatar);
     msg.appendChild(wrap);
     chatArea.appendChild(msg);
-    
-    if (role === 'ai' && !isError) {
-        setTimeout(addCopyButtonsToCodeBlocks, 10);
-    }
-    
+    if (role === 'ai' && !isError) { setTimeout(addCopyButtonsToCodeBlocks, 10); }
     chatArea.scrollTop = chatArea.scrollHeight;
     return bubble;
 }
 
-// ─── TYPING ──────────────────────────────────────────────────
 function renderTyping() {
     var msg = document.createElement('div');
     msg.className = 'chat-msg';
     msg.id = 'typingMsg';
-    
     var avatar = document.createElement('div');
     avatar.className = 'chat-avatar ai';
     avatar.innerHTML = '<img src="' + AVATAR_URL + '" alt="Fz" onerror="this.style.display=\'none\'; this.textContent=\'Fz\';">';
-    
     var wrap = document.createElement('div');
     wrap.className = 'chat-bubble-wrap';
-    
     var bubble = document.createElement('div');
     bubble.className = 'chat-bubble';
     bubble.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
-    
     wrap.appendChild(bubble);
     msg.appendChild(avatar);
     msg.appendChild(wrap);
@@ -785,14 +942,12 @@ function removeTyping() {
     if (el) el.remove();
 }
 
-// ─── SEND MESSAGE ────────────────────────────────────────────
 async function sendMessage() {
     var text = input.value.trim();
     if (!text || isProcessing) return;
     
     renderMessage('user', text);
     history.push({ role: 'user', content: text });
-    
     input.value = '';
     autoResize();
     isProcessing = true;
@@ -807,7 +962,6 @@ async function sendMessage() {
         });
         var data = await res.json();
         removeTyping();
-        
         if (!res.ok) {
             renderMessage('ai', 'Error: ' + (data.error || 'Terjadi kesalahan'), true);
         } else {
@@ -824,7 +978,8 @@ async function sendMessage() {
     }
 }
 
-// ─── CLEAR ──────────────────────────────────────────────────
+sendBtn.addEventListener('click', sendMessage);
+
 clearBtn.addEventListener('click', function() {
     history = [];
     chatArea.innerHTML = '';
@@ -832,11 +987,7 @@ clearBtn.addEventListener('click', function() {
     emptyState.style.display = 'flex';
 });
 
-// ─── EVENTS ──────────────────────────────────────────────────
-sendBtn.addEventListener('click', sendMessage);
-
 input.focus();
-
 console.log('Fz AI v2.0 — Powered by Fiqqzr7');
 </script>
 
