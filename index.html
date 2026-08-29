@@ -62,7 +62,7 @@ body {
 ::selection { background: var(--accent-dim); color: #fff; }
 .mono { font-family: 'JetBrains Mono', monospace; }
 
-/* ─── BACKGROUND ──────────────────────────────────────────── */
+/* Background logo pattern */
 .bg-logo-pattern {
     position: fixed;
     inset: 0;
@@ -104,7 +104,7 @@ body {
     mask-image: linear-gradient(to bottom, black, transparent 80%);
 }
 
-/* ─── HEADER ───────────────────────────────────────────────── */
+/* Header */
 .brand-header {
     flex-shrink: 0;
     padding: 10px 14px;
@@ -135,7 +135,6 @@ body {
     background: #111;
 }
 .brand-mark img { width: 100%; height: 100%; object-fit: cover; }
-
 .brand-mark-fallback {
     width: 28px; height: 28px;
     border-radius: 8px;
@@ -174,11 +173,6 @@ body {
     50% { opacity: .4; transform: scale(.8); }
 }
 
-.header-actions {
-    display: flex;
-    gap: 6px;
-}
-
 .btn-clear {
     background: rgba(255,255,255,0.05);
     border: 1px solid var(--border);
@@ -196,7 +190,7 @@ body {
     color: var(--fg);
 }
 
-/* ─── CHAT AREA ────────────────────────────────────────────── */
+/* Chat area */
 .chat-container {
     flex: 1;
     overflow-y: auto;
@@ -208,7 +202,7 @@ body {
     -webkit-overflow-scrolling: touch;
 }
 
-/* ─── EMPTY STATE ──────────────────────────────────────────── */
+/* Empty state */
 .empty-state {
     flex: 1;
     display: flex;
@@ -222,7 +216,7 @@ body {
 .empty-state p { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.6; }
 .empty-state .powered { font-size: 11px; color: var(--muted-2); margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
 
-/* ─── CHAT MESSAGE ─────────────────────────────────────────── */
+/* Chat message */
 .chat-msg {
     display: flex;
     gap: 10px;
@@ -286,34 +280,32 @@ body {
     color: #f2a3a3;
 }
 
-/* ─── COPY BUTTON ──────────────────────────────────────────── */
-.copy-btn {
-    background: rgba(255,255,255,0.05);
+/* Copy button untuk code sahaja */
+.copy-code-btn {
+    background: rgba(255,255,255,0.06);
     border: 1px solid var(--border);
     color: var(--muted-2);
-    font-size: 11px;
-    padding: 3px 10px;
+    font-size: 10px;
+    padding: 2px 10px;
     border-radius: 999px;
     cursor: pointer;
     font-family: 'JetBrains Mono', monospace;
     transition: all 0.2s;
+    margin-top: 4px;
     align-self: flex-start;
-    opacity: 0.5;
 }
-.copy-btn:hover {
+.copy-code-btn:hover {
     opacity: 1;
     border-color: var(--border-hover);
-    background: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.1);
     color: var(--fg);
 }
-.copy-btn.copied {
+.copy-code-btn.copied {
     color: #4ade80;
     border-color: #4ade80;
-    opacity: 1;
 }
-.chat-msg.user .copy-btn { align-self: flex-end; }
 
-/* ─── CODE BLOCK ───────────────────────────────────────────── */
+/* Code block */
 .code-block {
     background: rgba(255,255,255,0.05);
     border: 1px solid var(--border);
@@ -341,8 +333,13 @@ body {
     font-family: inherit;
     font-size: inherit;
 }
+.code-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
 
-/* ─── TYPING ────────────────────────────────────────────────── */
+/* Typing */
 .typing-dots { display: flex; gap: 4px; padding: 6px 2px; }
 .typing-dots span {
     width: 5px; height: 5px;
@@ -357,7 +354,7 @@ body {
     40% { opacity: 1; }
 }
 
-/* ─── LINK PREVIEW ──────────────────────────────────────────── */
+/* Link preview */
 .link-preview {
     margin: 4px 0;
     border: 1px solid var(--border);
@@ -425,7 +422,17 @@ body {
 .embed-container a { color: #8ab4f8; word-break: break-all; }
 .embed-container a:hover { text-decoration: underline; }
 
-/* ─── COMPOSER ───────────────────────────────────────────────── */
+/* Inline code */
+.inline-code {
+    background: rgba(255,255,255,0.06);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+    color: #e2e8f0;
+}
+
+/* Composer */
 .composer-wrap {
     flex-shrink: 0;
     padding: 8px 12px 12px;
@@ -495,12 +502,12 @@ body {
 }
 .footer-text span { color: #4f4f4f; }
 
-/* ─── SCROLLBAR ─────────────────────────────────────────────── */
+/* Scrollbar */
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--muted-2); border-radius: 99px; }
 
-/* ─── RESPONSIVE ────────────────────────────────────────────── */
+/* Responsive */
 @media (max-width: 480px) {
     .brand-header { padding: 8px 12px; }
     .brand-mark { width: 24px; height: 24px; }
@@ -525,7 +532,7 @@ body {
     .link-preview-image { max-height: 100px; }
     .embed-image { max-height: 200px; }
     .embed-video { max-height: 160px; }
-    .copy-btn { font-size: 10px; padding: 2px 8px; }
+    .copy-code-btn { font-size: 9px; padding: 2px 8px; }
     
     .bg-logo-pattern::before { font-size: 40px; letter-spacing: 20px; }
 }
@@ -564,7 +571,7 @@ body {
     <!-- EMPTY STATE -->
     <div class="empty-state" id="emptyState">
         <div>
-            <div class="icon">⚡</div>
+            <div class="icon">Fz</div>
             <h2>Halo, saya Fz AI</h2>
             <p>Tanyakan apa saja — dari ide, kode, sampai obrolan santai.</p>
             <div class="powered">powered by Fiqqzr7</div>
@@ -580,12 +587,12 @@ body {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22l-4-9-9-4z"/></svg>
         </button>
     </div>
-    <div class="footer-text">Fz AI boleh buat kesalahan · <span>⚡ Fiqqzr7</span></div>
+    <div class="footer-text">Fz AI boleh buat kesalahan · <span>powered by Fiqqzr7</span></div>
 </div>
 
 <script>
 // ============================================================
-// FZ AI — MOBILE FOCUS
+// FZ AI — FULL VERSION (TANPA EMOJI)
 // ============================================================
 
 const chatArea = document.getElementById('chatArea');
@@ -613,124 +620,167 @@ input.addEventListener('keydown', (e) => {
     }
 });
 
-// ─── PROCESS MESSAGE ────────────────────────────────────────
-function processMessage(text) {
-    let processed = text;
-    
-    // ─── CODE BLOCKS ──────────────────────────────────────────
-    processed = processed.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
-        const langLabel = lang ? `<span class="code-lang">${lang}</span>` : '';
-        return `<div class="code-block">${langLabel}<code>${escapeHtml(code.trim())}</code></div>`;
-    });
-    
-    // ─── INLINE CODE ──────────────────────────────────────────
-    processed = processed.replace(/`([^`]+)`/g, (match, code) => {
-        return `<code style="background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:0.9em;color:#e2e8f0;">${escapeHtml(code)}</code>`;
-    });
-    
-    // ─── IMAGE LINKS ──────────────────────────────────────────
-    const imageRegex = /(https?:\/\/[^\s]+\.(png|jpg|jpeg|gif|webp|bmp|svg))/gi;
-    processed = processed.replace(imageRegex, (match) => {
-        return `<div class="embed-container"><img src="${match}" alt="Image" class="embed-image" loading="lazy" onerror="this.style.display='none'"></div>`;
-    });
-    
-    // ─── VIDEO LINKS ──────────────────────────────────────────
-    const videoRegex = /(https?:\/\/[^\s]+\.(mp4|webm|mov|avi|mkv))/gi;
-    processed = processed.replace(videoRegex, (match) => {
-        return `<div class="embed-container"><video src="${match}" controls class="embed-video"></video></div>`;
-    });
-    
-    // ─── YOUTUBE ──────────────────────────────────────────────
-    const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/gi;
-    processed = processed.replace(ytRegex, (match, id) => {
-        return `<div class="embed-container"><iframe src="https://www.youtube.com/embed/${id}" class="embed-video" style="aspect-ratio:16/9;width:100%;max-width:100%;border:none;border-radius:6px;" allowfullscreen></iframe></div>`;
-    });
-    
-    // ─── REGULAR LINKS ────────────────────────────────────────
-    const linkRegex = /(https?:\/\/[^\s]+)/gi;
-    processed = processed.replace(linkRegex, (match) => {
-        if (match.match(/\.(png|jpg|jpeg|gif|webp|bmp|svg|mp4|webm|mov|avi|mkv)/i)) return match;
-        if (match.match(/youtube\.com|youtu\.be/)) return match;
-        return `<div class="link-preview"><a href="${match}" target="_blank" rel="noopener"><div class="link-preview-body"><div class="link-preview-title">${match}</div><div class="link-preview-site">${new URL(match).hostname}</div></div></a></div>`;
-    });
-    
-    return processed;
-}
-
+// ─── ESCAPE HTML ─────────────────────────────────────────────
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
-// ─── COPY BUTTON ─────────────────────────────────────────────
-function createCopyButton(text) {
-    const btn = document.createElement('button');
-    btn.className = 'copy-btn';
-    btn.innerHTML = '<i class="fa-regular fa-copy"></i> Salin';
-    btn.addEventListener('click', async () => {
+// ─── PROCESS MESSAGE ────────────────────────────────────────
+function processMessage(text) {
+    let processed = text;
+    let codeBlocks = [];
+    
+    // ─── CODE BLOCKS ──────────────────────────────────────────
+    processed = processed.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
+        const langLabel = lang ? '<span class="code-lang">' + escapeHtml(lang) + '</span>' : '';
+        const cleanCode = code.trim();
+        const codeId = 'code-' + codeBlocks.length;
+        codeBlocks.push(cleanCode);
+        return '<div class="code-block" id="' + codeId + '">' + langLabel + '<code>' + escapeHtml(cleanCode) + '</code><div class="code-actions"></div></div>';
+    });
+    
+    // ─── INLINE CODE ──────────────────────────────────────────
+    processed = processed.replace(/`([^`]+)`/g, function(match, code) {
+        return '<span class="inline-code">' + escapeHtml(code) + '</span>';
+    });
+    
+    // ─── IMAGE LINKS ──────────────────────────────────────────
+    const imageRegex = /(https?:\/\/[^\s]+\.(png|jpg|jpeg|gif|webp|bmp|svg))/gi;
+    processed = processed.replace(imageRegex, function(match) {
+        return '<div class="embed-container"><img src="' + match + '" alt="Image" class="embed-image" loading="lazy" onerror="this.style.display=\'none\'"></div>';
+    });
+    
+    // ─── VIDEO LINKS ──────────────────────────────────────────
+    const videoRegex = /(https?:\/\/[^\s]+\.(mp4|webm|mov|avi|mkv))/gi;
+    processed = processed.replace(videoRegex, function(match) {
+        return '<div class="embed-container"><video src="' + match + '" controls class="embed-video"></video></div>';
+    });
+    
+    // ─── YOUTUBE ──────────────────────────────────────────────
+    const ytRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/gi;
+    processed = processed.replace(ytRegex, function(match, id) {
+        return '<div class="embed-container"><iframe src="https://www.youtube.com/embed/' + id + '" class="embed-video" style="aspect-ratio:16/9;width:100%;max-width:100%;border:none;border-radius:6px;" allowfullscreen></iframe></div>';
+    });
+    
+    // ─── REGULAR LINKS ────────────────────────────────────────
+    const linkRegex = /(https?:\/\/[^\s]+)/gi;
+    processed = processed.replace(linkRegex, function(match) {
+        if (match.match(/\.(png|jpg|jpeg|gif|webp|bmp|svg|mp4|webm|mov|avi|mkv)/i)) return match;
+        if (match.match(/youtube\.com|youtu\.be/)) return match;
         try {
-            await navigator.clipboard.writeText(text);
-            btn.innerHTML = '<i class="fa-regular fa-check"></i> Disalin';
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fa-regular fa-copy"></i> Salin';
-                btn.classList.remove('copied');
-            }, 2000);
+            var hostname = new URL(match).hostname;
         } catch {
-            // Fallback
-            const area = document.createElement('textarea');
-            area.value = text;
-            document.body.appendChild(area);
-            area.select();
-            document.execCommand('copy');
-            area.remove();
-            btn.innerHTML = '<i class="fa-regular fa-check"></i> Disalin';
-            btn.classList.add('copied');
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fa-regular fa-copy"></i> Salin';
-                btn.classList.remove('copied');
-            }, 2000);
+            var hostname = match;
+        }
+        return '<div class="link-preview"><a href="' + match + '" target="_blank" rel="noopener"><div class="link-preview-body"><div class="link-preview-title">' + match + '</div><div class="link-preview-site">' + hostname + '</div></div></a></div>';
+    });
+    
+    // Store code blocks for later
+    window._codeBlocks = codeBlocks;
+    return processed;
+}
+
+// ─── ADD COPY BUTTONS TO CODE BLOCKS ──────────────────────
+function addCopyButtonsToCodeBlocks() {
+    var codeBlocks = document.querySelectorAll('.code-block');
+    codeBlocks.forEach(function(block, index) {
+        var actions = block.querySelector('.code-actions');
+        if (actions && !actions.querySelector('.copy-code-btn')) {
+            var codeText = block.querySelector('code');
+            if (codeText) {
+                var text = codeText.textContent;
+                var btn = document.createElement('button');
+                btn.className = 'copy-code-btn';
+                btn.textContent = 'Copy code';
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    copyCode(text, btn);
+                });
+                actions.appendChild(btn);
+            }
         }
     });
-    return btn;
+}
+
+// ─── COPY CODE ──────────────────────────────────────────────
+function copyCode(text, btn) {
+    try {
+        navigator.clipboard.writeText(text).then(function() {
+            btn.textContent = 'Copied';
+            btn.classList.add('copied');
+            setTimeout(function() {
+                btn.textContent = 'Copy code';
+                btn.classList.remove('copied');
+            }, 2000);
+        }).catch(function() {
+            fallbackCopy(text, btn);
+        });
+    } catch {
+        fallbackCopy(text, btn);
+    }
+}
+
+function fallbackCopy(text, btn) {
+    var area = document.createElement('textarea');
+    area.value = text;
+    document.body.appendChild(area);
+    area.select();
+    try {
+        document.execCommand('copy');
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(function() {
+            btn.textContent = 'Copy code';
+            btn.classList.remove('copied');
+        }, 2000);
+    } catch {
+        btn.textContent = 'Failed';
+    }
+    area.remove();
 }
 
 // ─── RENDER MESSAGE ──────────────────────────────────────────
-function renderMessage(role, text, isError = false) {
+function renderMessage(role, text, isError) {
+    if (isError === undefined) isError = false;
     if (emptyState) emptyState.style.display = 'none';
     
-    const msg = document.createElement('div');
-    msg.className = `chat-msg ${role === 'user' ? 'user' : ''}`;
+    var msg = document.createElement('div');
+    msg.className = 'chat-msg' + (role === 'user' ? ' user' : '');
     
     // Avatar
-    const avatar = document.createElement('div');
-    avatar.className = `chat-avatar ${role === 'ai' ? 'ai' : 'user'}`;
+    var avatar = document.createElement('div');
+    avatar.className = 'chat-avatar ' + (role === 'ai' ? 'ai' : 'user');
     if (role === 'ai') {
-        avatar.innerHTML = `<img src="${AVATAR_URL}" alt="Fz" onerror="this.style.display='none'; this.textContent='Fz';">`;
+        avatar.innerHTML = '<img src="' + AVATAR_URL + '" alt="Fz" onerror="this.style.display=\'none\'; this.textContent=\'Fz\';">';
     } else {
         avatar.textContent = 'K';
     }
     
     // Bubble wrap
-    const wrap = document.createElement('div');
+    var wrap = document.createElement('div');
     wrap.className = 'chat-bubble-wrap';
     
     // Bubble content
-    const bubble = document.createElement('div');
-    bubble.className = `chat-bubble ${isError ? 'error' : ''}`;
-    bubble.innerHTML = role === 'ai' ? processMessage(text) : text;
+    var bubble = document.createElement('div');
+    bubble.className = 'chat-bubble' + (isError ? ' error' : '');
     
-    // Copy button (for AI messages only)
     if (role === 'ai' && !isError) {
-        const copyBtn = createCopyButton(text);
-        wrap.appendChild(copyBtn);
+        bubble.innerHTML = processMessage(text);
+    } else {
+        bubble.textContent = text;
     }
     
     wrap.appendChild(bubble);
     msg.appendChild(avatar);
     msg.appendChild(wrap);
     chatArea.appendChild(msg);
+    
+    // Add copy buttons to code blocks
+    if (role === 'ai' && !isError) {
+        setTimeout(addCopyButtonsToCodeBlocks, 10);
+    }
     
     // Scroll to bottom
     chatArea.scrollTop = chatArea.scrollHeight;
@@ -739,18 +789,18 @@ function renderMessage(role, text, isError = false) {
 
 // ─── TYPING ──────────────────────────────────────────────────
 function renderTyping() {
-    const msg = document.createElement('div');
+    var msg = document.createElement('div');
     msg.className = 'chat-msg';
     msg.id = 'typingMsg';
     
-    const avatar = document.createElement('div');
+    var avatar = document.createElement('div');
     avatar.className = 'chat-avatar ai';
-    avatar.innerHTML = `<img src="${AVATAR_URL}" alt="Fz" onerror="this.style.display='none'; this.textContent='Fz';">`;
+    avatar.innerHTML = '<img src="' + AVATAR_URL + '" alt="Fz" onerror="this.style.display=\'none\'; this.textContent=\'Fz\';">';
     
-    const wrap = document.createElement('div');
+    var wrap = document.createElement('div');
     wrap.className = 'chat-bubble-wrap';
     
-    const bubble = document.createElement('div');
+    var bubble = document.createElement('div');
     bubble.className = 'chat-bubble';
     bubble.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
     
@@ -762,13 +812,13 @@ function renderTyping() {
 }
 
 function removeTyping() {
-    const el = document.getElementById('typingMsg');
+    var el = document.getElementById('typingMsg');
     if (el) el.remove();
 }
 
 // ─── SEND MESSAGE ────────────────────────────────────────────
 async function sendMessage() {
-    const text = input.value.trim();
+    var text = input.value.trim();
     if (!text || isProcessing) return;
     
     renderMessage('user', text);
@@ -781,12 +831,12 @@ async function sendMessage() {
     renderTyping();
     
     try {
-        const res = await fetch('/api/chat', {
+        var res = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ messages: history })
         });
-        const data = await res.json();
+        var data = await res.json();
         removeTyping();
         
         if (!res.ok) {
@@ -806,7 +856,7 @@ async function sendMessage() {
 }
 
 // ─── CLEAR ──────────────────────────────────────────────────
-clearBtn.addEventListener('click', () => {
+clearBtn.addEventListener('click', function() {
     history = [];
     chatArea.innerHTML = '';
     chatArea.appendChild(emptyState);
@@ -816,7 +866,6 @@ clearBtn.addEventListener('click', () => {
 // ─── EVENTS ──────────────────────────────────────────────────
 sendBtn.addEventListener('click', sendMessage);
 
-// Focus input on load
 input.focus();
 
 console.log('Fz AI v2.0 — Powered by Fiqqzr7');
